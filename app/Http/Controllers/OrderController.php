@@ -15,7 +15,8 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $orders = Orders::all();
+        return view('front_page.view', compact('orders'));
     }
 
     /**
@@ -42,16 +43,16 @@ class OrderController extends Controller
             foreach ($request->product_name as $item => $value) {
                 $data2 = array(
                     'orders_id' => $lastid,
-                    'product_name'=>$request->product_name[$item],
-                    'brand'=>$request->brand[$item],
-                    'quantity'=>$request->quantity[$item],
-                    'budget'=>$request->budget[$item],
-                    'amount'=>$request->amount[$item],
+                    'product_name' => $request->product_name[$item],
+                    'brand' => $request->brand[$item],
+                    'quantity' => $request->quantity[$item],
+                    'budget' => $request->budget[$item],
+                    'amount' => $request->amount[$item],
                 );
-               $db = new  Items($data2);
-               $db->save();
+                $db = new  Items($data2);
+                $db->save();
             }
-            return redirect()->back()->with('success','data insert successfully');
+            return redirect()->back()->with('success', 'data insert successfully');
         }
     }
 
@@ -98,5 +99,11 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function items($id)
+    {
+        $items = Items::where('orders_id', '=', $id)->get();
+        return view('front_page.items', compact('items'));
     }
 }
